@@ -1,0 +1,21 @@
+bubble sort:
+Height -fres/shapes1.txt -th -sb
+volume -fres/shapes1.txt -tv -sb
+base area -fres/shapes1.txt -ta -sb
+
+Selection sort:
+Height -fres/shapes1.txt -th -ss
+
+Insertion sort:
+Height -fres/shapes1.txt -th -si
+
+Merge sort:
+Height -fres/shapes1.txt -th -sm
+
+Quick sort:
+Height -fres/shapes1.txt -th -sq
+
+
+-ta -sQ -f"res\shapes1".txt
+
+

@@ -1,0 +1,18 @@
+Export jar: file > export > RunableJarfile > pick location > finish 
+
+Set up command prompt:
+
+1: FIND window > preferences > copy jre path
+mine(C:\Users\seksann\Documents\SAIT\SAIT 3\OOP 2\eclipse-java-2025-06-R-win32-x86_64\eclipse\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.7.v20250502-0916\jre)
+
+2: add \bin\java at the end pf path
+SHOULD LOOK LIKE (C:\Users\seksann\Documents\SAIT\SAIT 3\OOP 2\eclipse-java-2025-06-R-win32-x86_64\eclipse\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.7.v20250502-0916\jre\bin\java)
+
+3: set java variable: have "set JAVA=" infont of the jre path and put into command promt
+set JAVA="C:\Users\seksann\Documents\SAIT\SAIT 3\OOP 2\eclipse-java-2025-06-R-win32-x86_64\eclipse\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_21.0.7.v20250502-0916\jre\bin\java"
+
+Navigate to the exported .jar folder
+Mine(cd "C:\Users\seksann\Documents\SAIT\SAIT 4\OOP3\OOP3_Yunobo\cmd")
+
+run program but have "%JAVA% -jar Sort.jar" in front og the argument
+Example "%JAVA% -jar Sort.jar -fshapes3.txt -Tv -Sq"
