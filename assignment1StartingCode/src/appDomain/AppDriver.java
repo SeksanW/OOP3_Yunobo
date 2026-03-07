@@ -156,7 +156,7 @@ public class AppDriver
                     break;
 
                 case 'z':
-                    SortingUtility.mySort(shapes, comparator);
+                    SortingUtility.heapSort(shapes, comparator);
                     break;
             }
 
@@ -178,7 +178,7 @@ public class AppDriver
          System.out.println(sortName + " run time was: " + (end - start) + " milliseconds");
 
         } catch (Exception e) {
-            System.out.println("Error reading file.");
+            System.out.println("Error reading file." + e.getMessage());
         }
         
     }

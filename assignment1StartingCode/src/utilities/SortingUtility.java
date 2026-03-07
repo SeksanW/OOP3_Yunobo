@@ -13,193 +13,202 @@
 package utilities;
 
 import java.util.Comparator;
-import shapes.Shape;
 
 public class SortingUtility {
 	
 	// Bubble sort
-    public static void bubbleSort(Shape[] shapes, Comparator<Shape> comp) {
-        int n = shapes.length;
+    public static <T> void bubbleSort(T[] arr, Comparator<? super T> comp) {
+        int n = arr.length;
 
         for (int i = 0; i < n - 1; i++) {
             for (int j = 0; j < n - i - 1; j++) {
-                if (comp.compare(shapes[j], shapes[j + 1]) < 0) {
-                    swap(shapes, j, j + 1);
+                if (comp.compare(arr[j], arr[j + 1]) < 0) {
+                    swap(arr, j, j + 1);
                 }
             }
         }
     }
     
     // Selection Sort
-    public static void selectionSort(Shape[] shapes, Comparator<Shape> comp) {
-        int n = shapes.length;
+    public static <T> void selectionSort(T[] arr, Comparator<? super T> comp) {
+        int n = arr.length;
 
         for (int i = 0; i < n - 1; i++) {
             int maxIndex = i;
 
             for (int j = i + 1; j < n; j++) {
-                if (comp.compare(shapes[j], shapes[maxIndex]) > 0) {
+                if (comp.compare(arr[j], arr[maxIndex]) > 0) {
                     maxIndex = j;
                 }
             }
 
-            swap(shapes, i, maxIndex);
+            swap(arr, i, maxIndex);
         }
     }
     
     // Insert Sort
-    public static void insertionSort(Shape[] shapes, Comparator<Shape> comp) {
-        for (int i = 1; i < shapes.length; i++) {
-            Shape key = shapes[i];
+    public static <T> void insertionSort(T[] arr, Comparator<? super T> comp) {
+        for (int i = 1; i < arr.length; i++) {
+            T key = arr[i];
             int j = i - 1;
 
-            while (j >= 0 && comp.compare(shapes[j], key) < 0) {
-                shapes[j + 1] = shapes[j];
+            while (j >= 0 && comp.compare(arr[j], key) < 0) {
+                arr[j + 1] = arr[j];
                 j--;
             }
 
-            shapes[j + 1] = key;
+            arr[j + 1] = key;
         }
     }
     
     // Merge Sort
-    public static void mergeSort(Shape[] shapes, Comparator<Shape> comp) {
-        mergeSortHelper(shapes, 0, shapes.length - 1, comp);
+    public static <T> void mergeSort(T[] arr, Comparator<? super T> comp) {
+        mergeSortHelper(arr, 0, arr.length - 1, comp);
     }
 
-    private static void mergeSortHelper(Shape[] shapes, int left, int right, Comparator<Shape> comp) {
+    private static <T>void mergeSortHelper(T[] arr, int left, int right, Comparator<? super T> comp) {
         if (left < right) {
             int mid = (left + right) / 2;
 
-            mergeSortHelper(shapes, left, mid, comp);
-            mergeSortHelper(shapes, mid + 1, right, comp);
-            merge(shapes, left, mid, right, comp);
+            mergeSortHelper(arr, left, mid, comp);
+            mergeSortHelper(arr, mid + 1, right, comp);
+            merge(arr, left, mid, right, comp);
         }
     }
     
-    private static void merge(Shape[] shapes, int left, int mid, int right, Comparator<Shape> comp) {
+    private static <T> void merge(T[] arr, int left, int mid, int right, Comparator<? super T> comp) {
         int n1 = mid - left + 1;
         int n2 = right - mid;
 
-        Shape[] leftArray = new Shape[n1];
-        Shape[] rightArray = new Shape[n2];
+        Object[] leftArray = new Object[n1];
+        Object[] rightArray = new Object[n2];
 
         for (int i = 0; i < n1; i++) {
-            leftArray[i] = shapes[left + i];
+            leftArray[i] = arr[left + i];
         }
 
         for (int j = 0; j < n2; j++) {
-            rightArray[j] = shapes[mid + 1 + j];
+            rightArray[j] = arr[mid + 1 + j];
         }
 
         int i = 0, j = 0, k = left;
 
         while (i < n1 && j < n2) {
-            if (comp.compare(leftArray[i], rightArray[j]) >= 0) {
-                shapes[k++] = leftArray[i++];
+            @SuppressWarnings("unchecked")
+            T leftVal = (T) leftArray[i];
+            @SuppressWarnings("unchecked")
+            T rightVal = (T) rightArray[j];
+            
+            if (comp.compare(leftVal, rightVal) >= 0) {
+            	arr[k++] = leftVal;
+            	i++;
             } else {
-                shapes[k++] = rightArray[j++];
+            	arr[k++] = rightVal;
+            	j++;
             }
         }
 
         while (i < n1) {
-            shapes[k++] = leftArray[i++];
+        	@SuppressWarnings("unchecked")
+            T leftVal = (T) leftArray[i++];
+        	arr[k++] = leftVal;
         }
 
         while (j < n2) {
-            shapes[k++] = rightArray[j++];
+        	@SuppressWarnings("unchecked")
+            T rightVal = (T) rightArray[j++];
+        	arr[k++] = rightVal;
         }
     }
     
     // Quick sort
-    public static void quickSort(Shape[] shapes, Comparator<Shape> comp) {
-        quickSortHelper(shapes, 0, shapes.length - 1, comp);
+    public static <T> void quickSort(T[] arr, Comparator<? super T> comp) {
+        quickSortHelper(arr, 0, arr.length - 1, comp);
     }
 
-    private static void quickSortHelper(Shape[] shapes, int left, int right, Comparator<Shape> comp) {
+    private static <T>void quickSortHelper(T[] arr, int left, int right, Comparator<? super T> comp) {
         if (left >= right) {
             return;
         }
 
-        int pivotIndex = medianOfThree(shapes, left, right, comp);
-        swap(shapes, pivotIndex, right);
+        int pivotIndex = medianOfThree(arr, left, right, comp);
+        swap(arr, pivotIndex, right);
 
-        int partitionIndex = partition(shapes, left, right, comp);
+        int partitionIndex = partition(arr, left, right, comp);
 
-        quickSortHelper(shapes, left, partitionIndex - 1, comp);
-        quickSortHelper(shapes, partitionIndex + 1, right, comp);
+        quickSortHelper(arr, left, partitionIndex - 1, comp);
+        quickSortHelper(arr, partitionIndex + 1, right, comp);
     }
 
-    private static int medianOfThree(Shape[] shapes, int left, int right, Comparator<Shape> comp) {
+    private static <T> int medianOfThree(T[] arr, int left, int right, Comparator<? super T> comp) {
         int mid = (left + right) / 2;
 
-        // Order left, mid, right in ascending relation
-        if (comp.compare(shapes[left], shapes[mid]) > 0) {
-            swap(shapes, left, mid);
+        if (comp.compare(arr[left], arr[mid]) > 0) {
+            swap(arr, left, mid);
         }
 
-        if (comp.compare(shapes[left], shapes[right]) > 0) {
-            swap(shapes, left, right);
+        if (comp.compare(arr[left], arr[right]) > 0) {
+            swap(arr, left, right);
         }
 
-        if (comp.compare(shapes[mid], shapes[right]) > 0) {
-            swap(shapes, mid, right);
+        if (comp.compare(arr[mid], arr[right]) > 0) {
+            swap(arr, mid, right);
         }
 
         return mid;
     }
 
-    private static int partition(Shape[] shapes, int left, int right, Comparator<Shape> comp) {
-        Shape pivot = shapes[right];
+    private static <T> int partition(T[] arr, int left, int right, Comparator<? super T> comp) {
+        T pivot = arr[right];
         int i = left - 1;
 
         for (int j = left; j < right; j++) {
-            if (comp.compare(shapes[j], pivot) >= 0) {
+            if (comp.compare(arr[j], pivot) >= 0) {
                 i++;
-                swap(shapes, i, j);
+                swap(arr, i, j);
             }
         }
 
-        swap(shapes, i + 1, right);
+        swap(arr, i + 1, right);
         return i + 1;
     }
     
     //Heap short
-    public static void mySort(Shape[] shapes, Comparator<Shape> comp) {
-        int n = shapes.length;
+    public static <T> void heapSort(T[] arr, Comparator<? super T> comp) {
+        int n = arr.length;
 
         for (int i = n / 2 - 1; i >= 0; i--) {
-            heapify(shapes, n, i, comp);
+            heapify(arr, n, i, comp);
         }
 
         for (int i = n - 1; i > 0; i--) {
-            swap(shapes, 0, i);
-            heapify(shapes, i, 0, comp);
+            swap(arr, 0, i);
+            heapify(arr, i, 0, comp);
         }
     }
 
-    private static void heapify(Shape[] shapes, int n, int i, Comparator<Shape> comp) {
+    private static <T> void heapify(T[] arr, int n, int i, Comparator<? super T> comp) {
         int largest = i;
         int left = 2 * i + 1;
         int right = 2 * i + 2;
 
-        if (left < n && comp.compare(shapes[left], shapes[largest]) > 0) {
+        if (left < n && comp.compare(arr[left], arr[largest]) > 0) {
             largest = left;
         }
 
-        if (right < n && comp.compare(shapes[right], shapes[largest]) > 0) {
+        if (right < n && comp.compare(arr[right], arr[largest]) > 0) {
             largest = right;
         }
 
         if (largest != i) {
-            swap(shapes, i, largest);
-            heapify(shapes, n, largest, comp);
+            swap(arr, i, largest);
+            heapify(arr, n, largest, comp);
         }
     }
 
-    private static void swap(Shape[] shapes, int i, int j) {
-        Shape temp = shapes[i];
-        shapes[i] = shapes[j];
-        shapes[j] = temp;
+    private static <T> void swap(T[] arr, int i, int j) {
+        T temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
     }
 }

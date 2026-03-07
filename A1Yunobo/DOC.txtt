@@ -1,0 +1,111 @@
+HEAP sort:Algorithm Description and Complexity Analysis
+
+Description: 
+A heap sort is an algorithm that sorts data in a structure called a heap.
+Think of a tournament bracket where the you have winners and losers, losers goes to the bottom and winners goes to the top.
+The index is structured from top down and left to right, so at the very top you will have index 0, followed by index 1 on the row below starting from the left, then index 2 and so on.
+Once the highest number is crowned it then gets taken out of the system and gets locked up in a spot where the heap is rebuilt to crown the next highest number and so on until there is none left.
+Finishing the process and aligning the numbers in order.
+
+
+Heap sort is done in 2 phases:
+
+Phase one Build heap: (example data:[3,2,5,9,8,7] 
+	1: You build a bracket starting with as shown    __________3_________
+	   2 is index 0, 3 is 1 and 5 is 2				______2________5_____
+													___9______8________7_
+													
+	2: Then starting at number 2 who will be compared to the bottom 8 and 9
+	   since 9 is bigger than 2 so they swap places, at the same time 5 is less than 7 so it gets swapped.
+	   leaving 9 and 7 fighting for the top spot, 9 being the larger number takes the spot of number 3 and gets crowned.
+	3: A at the end of phase one the largest number should sit at index 0
+	
+Phase 2 extracting:
+	4: Swap index 0 with the last index and locks that slot, so now the data would look [3,7,2,8,5] with [9]
+	5: The slot that 9 occupy is now considered a sorted slot.
+	6: Calls for heapify on the unsorted slots then build another heap bracket to sort for the next largest number.
+	7: repeating until all slots are locked.
+
+Heapify:
+	8:looking at the current a number will swap positions with the 2 bottom left or right slots if their number is lower 
+
+
+Pseudocode:
+
+HEAP-SORT(array)
+    n = length of array 
+
+    for i = n/2 - 1 down to 0
+        HEAPIFY(array, n, i)
+
+    for end = n - 1 down to 1
+        swap array[0] and array[end]
+        HEAPIFY(array, end, 0)
+        
+        
+ HEAPIFY(array, heapSize, root)
+    largest = root
+    left = 2 * root + 1
+    right = 2 * root + 2
+
+    if left < heapSize and array[left] > array[largest]
+        largest = left
+
+    if right < heapSize and array[right] > array[largest]
+        largest = right
+
+    if largest != root
+        swap array[root] and array[largest]
+        HEAPIFY(array, heapSize, largest)
+        
+Pseudocode break down:
+        
+ HEAP-SORT(array)						
+    n = length of array 					(Stores how many element are in the array.)
+
+
+    for i = n/2 - 1 down to 0 				(Loop starts build heap phase. The loops run about n/2)
+        HEAPIFY(array, n, i)  				(Turns the array into a max-heap, where the largest value rises to the top. heap height is log n)
+
+    for end = n - 1 down to 1 				(Starts extraction process. end marks last unsorted slot, each loop places one correct value in that slot, sorted section grows from the end of the array backward, )
+        swap array[0] and array[end]		(Swaps index 0 with the last index slot)
+        HEAPIFY(array, end, 0)				(After swapping slots, the heap gets broken. and rebuilt the heap with only the unsorted part of the array)
+       
+       
+ HEAPIFY(array, heapSize, root)								(Fixes the heap starting from one node.)
+    largest = root											(Assume the root is largest as a starting point)
+    left = 2 * root + 1										(Calculates the index of the left child)
+    right = 2 * root + 2									(Calculates the index of the right child)
+
+    if left < heapSize and array[left] > array[largest]		(Check if left child exist, check if left child is larger then current value, if both things are true the left takes the place as largest number)
+        largest = left
+
+    if right < heapSize and array[right] > array[largest]	(Check if right child exist, check if right child is larger then current value, if both things are true the right takes the place as largest number)
+        largest = right
+
+    if largest != root										(Checks if one child is larger than the root, if child is not larger than the heap is correct and no swap is needed, if child is larger tahn root gets moved down and swap)
+        swap array[root] and array[largest]					(Swaps smaller root with bigger child)
+        HEAPIFY(array, heapSize, largest)					(After swapping that new slot may still violate the heap, So the algorithm calls heapify again on that child position. This continues unti the value lands in the correct spot)
+        
+Complexity analysis:
+
+Build heap phase:
+The loop runs approximately n/2 times and calls heapify on each parent node.
+Heapify can take up to O(log n), but most calls happens near the bottom
+of the heap and require fewer operations.
+The total cost of building the heap is O(n).
+
+Extraction phase runs in O(n log n) time because the algorithm
+removes the largest slot n−1 times and each heapify operation
+takes O(log n) time.
+The total cost of this phase is (n − 1) × O(log n) = O(n log n)
+
+Total running time:
+
+O(n) + O(n log n) = O(n log n)
+
+Best case:    O(n log n)
+Average case: O(n log n)
+Worst case:   O(n log n)
+
+Space complexity: O(1)
